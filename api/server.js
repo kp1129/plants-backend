@@ -12,7 +12,7 @@ server.use(express.json());
 server.use(cors());
 
 server.use("/api/auth", authRouter);
-server.use("api/plants", plantsRouter);
+server.use("/api/plants", plantsRouter);
 
 server.get("/", (req, res) => {
     res.status(200).json({ message: "API is up and running!" })
