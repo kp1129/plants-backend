@@ -2,9 +2,11 @@ const express = require("express");
 const router = express.Router();
 // data access layer
 const Plants = require("./plantsModel");
+// authenticator middleware
+const authenticator = require('../auth/authenticator');
 
 // create new plant object
-router.post("/", (req, res) => {
+router.post("/", authenticator, (req, res) => {
   const newPlant = req.body;
   // check required fields
   if (
@@ -30,7 +32,7 @@ router.post("/", (req, res) => {
 });
 
 // update
-router.put("/:id", (req, res) => {
+router.put("/:id", authenticator, (req, res) => {
     const id = req.params.id;
     const changes = req.body;
     Plants.update(id, changes)
@@ -47,7 +49,7 @@ router.put("/:id", (req, res) => {
 })
 
 // delete plant object
-router.delete("/:id", (req, res) => {
+router.delete("/:id", authenticator, (req, res) => {
     const id = req.params.id;
     Plants.remove(id)
     .then((response) => {
@@ -61,7 +63,7 @@ router.delete("/:id", (req, res) => {
 })
 
 // read all plant objects associated with this user
-router.get("/", (req, res) => {
+router.get("/", authenticator, (req, res) => {
     // later, remember to grab user id from req.decodedtoken. 
     // rn its gonna grab all plants
     Plants.findAll()
@@ -70,7 +72,7 @@ router.get("/", (req, res) => {
 })
 
 // read a single plant object by plant id
-router.get("/:id", (req, res) => {
+router.get("/:id", authenticator, (req, res) => {
     const id = req.params.id;
     Plants.findById(id)
     .then(response => {
