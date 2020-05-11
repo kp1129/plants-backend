@@ -7,7 +7,7 @@ const authenticator = require('../auth/authenticator');
 
 // create new plant object
 router.post("/", authenticator, (req, res) => {
-  const newPlant = req.body;
+  const newPlant = {...req.body, users_id: req.decodedToken.userId};
   // check required fields
   if (
     !newPlant.nickname ||
